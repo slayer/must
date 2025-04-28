@@ -57,7 +57,7 @@ import (
   "github.com/slayer/must"
 )
 
-must.RegisterFailureHandler(func(message string, details string) {
+must.RegisterFailureHandler(func(message string, details ) {
   fmt.Println("World is mad! Error:", message)
   if len(details) > 0 {
     fmt.Println("Details:", details)
@@ -74,10 +74,38 @@ func main() {
   // This will panic if the value is nil
   var x *int
   must.NotNil(x, "x should not be nil")
+
+
+  // This will panic if the value is not equal to the expected value
+  must.NotEmpty([]int{1, 2, 3}, "Array should not be empty")
+  must.NotEmpty(map[string]int{"a": 1, "b": 2}, "Map should not be empty")
+  must.NotEmpty("Hello, world!", "String should not be empty")
+
+  // This will panic if map does not contain the key
+  must.SliceHas([]int{1, 2, 3}, 4, "Slice should contain 4")
+
+  // This will panic if map does not contain the key
+  must.MapHas(map[string]int{"a": 1, "b": 2}, "c", "Map should contain key 'c'")
+
+  must.FileExists("test.txt", "File should exist")
+  must.DirExists("test_dir", "Directory should exist")
 }
 
 ```
 
-
-
 ## Installation
+
+To install the `must` library, use the following command:
+
+```bash
+go get github.com/slayer/must
+```
+
+## License
+
+This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
+
+
+## Contributing
+
+Contributions are welcome! If you have suggestions for improvements or new features, please open an issue or submit a pull request.
