@@ -2,10 +2,13 @@
 
 
 **must** – for when you're shocked that the impossible happened… again.
+
 **must** — a gentle reminder that the universe owes you nothing.
-**must** — it's like assert, but it doesn't just quietly cry in dev mode.
+
 **must** — verifying reality, because QA can’t cover everything.
+
 **must** — because “should never happen” happens all the time.
+
 **must** — because sometimes you need to be reminded that the sky is blue and the grass is green.
 
 This library is designed to ensure that the world hasn't gone mad — that things behave as expected and the laws of physics still apply.
@@ -54,7 +57,7 @@ import (
   "github.com/slayer/must"
 )
 
-must.RegisterFailureHandler(func(message string, details ...string) {
+must.RegisterFailureHandler(func(message string, details string) {
   fmt.Println("World is mad! Error:", message)
   if len(details) > 0 {
     fmt.Println("Details:", details)
