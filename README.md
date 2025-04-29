@@ -1,5 +1,6 @@
 # Must!
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/slayer/must.svg)](https://pkg.go.dev/github.com/slayer/must)
 
 **must** – for when you're shocked that the impossible happened… again.
 
@@ -42,8 +43,20 @@ func main() {
   var x *int
   must.NotNil(x, "x should not be nil")
 
-  // This will panic if the value is not equal to the expected value
-  must.Equal(42, 43, "The answer to life, the universe, and everything is wrong!")
+  // This will panic if the slice, map or string is empty
+  must.NotEmpty([]int{1, 2, 3}, "Array should not be empty")
+  must.NotEmpty(map[string]int{"a": 1, "b": 2}, "Map should not be empty")
+  must.NotEmpty("Hello, world!", "String should not be empty")
+
+  // This will panic if map does not contain the key
+  must.SliceHas([]int{1, 2, 3}, 4, "Slice should contain 4")
+
+  // This will panic if map does not contain the key
+  must.MapHas(map[string]int{"a": 1, "b": 2}, "c", "Map should contain key 'c'")
+
+  must.FileExists("test.txt", "File should exist")
+  must.DirExists("test_dir", "Directory should exist")
+
 }
 ```
 
@@ -67,31 +80,13 @@ must.RegisterFailureHandler(func(message string, details ) {
 func main() {
   // This will panic if the condition is false
   must.True(2*2 == 4, "Math is broken!")
-
-  // This will panic if the value is not equal to the expected value
-  must.Equal(2*2, 5, "Math is broken!")
-
-  // This will panic if the value is nil
-  var x *int
-  must.NotNil(x, "x should not be nil")
-
-
-  // This will panic if the value is not equal to the expected value
-  must.NotEmpty([]int{1, 2, 3}, "Array should not be empty")
-  must.NotEmpty(map[string]int{"a": 1, "b": 2}, "Map should not be empty")
-  must.NotEmpty("Hello, world!", "String should not be empty")
-
-  // This will panic if map does not contain the key
-  must.SliceHas([]int{1, 2, 3}, 4, "Slice should contain 4")
-
-  // This will panic if map does not contain the key
-  must.MapHas(map[string]int{"a": 1, "b": 2}, "c", "Map should contain key 'c'")
-
-  must.FileExists("test.txt", "File should exist")
-  must.DirExists("test_dir", "Directory should exist")
 }
 
 ```
+
+## Documentation
+
+For more detailed documentation, including all available functions and their usage, please refer to the [GoDoc](https://pkg.go.dev/github.com/slayer/must) page.
 
 ## Installation
 
