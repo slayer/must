@@ -64,6 +64,31 @@ func TestNotNil(t *testing.T) {
 		var nilValue any
 		NotNil(nilValue, "should panic")
 	})
+
+	t.Run("nil string", func(t *testing.T) {
+		defer func() {
+			r := recover()
+			assert.NotNil(t, r, "Expected NotNil to panic on nil value")
+		}()
+
+		var nilString *string
+		NotNil(nilString, "should panic")
+	})
+
+	// Test if interface is not nil but value is nil
+	t.Run("interface with nil value", func(t *testing.T) {
+		defer func() {
+			r := recover()
+			assert.NotNil(t, r, "Expected NotNil to panic on nil interface")
+		}()
+
+		var nilError error // interface with nil value
+		NotNil(nilError, "should panic")
+	})
+
+	t.Run("interface not nil", func(t *testing.T) {
+		NotNil("not nil", "should not panic")
+	})
 }
 
 // TestNoError tests the NoError function

@@ -35,9 +35,6 @@ func NotNil(value any, message string) {
 	if value == nil {
 		abort(message, "expected a non-nil value, got nil")
 	}
-	if _, ok := value.(any); !ok {
-		abort(message, "expected a non-nil value, got nil")
-	}
 }
 
 // NoError checks if the given error is nil and panics if it is not.
@@ -222,19 +219,19 @@ func TypeOfNot[T any](value any, message string) {
 
 // PointsToSame checks if two pointers point to the same value and panics if they do not.
 func PointsToSame[T comparable](a, b *T, message string) {
-	if a == nil || b == nil {
+	if a == nil || b == nil { // nolint:staticcheck
 		abort(message, "expected non-nil pointers, got nil")
 	}
-	if *a != *b {
+	if *a != *b { // nolint:staticcheck
 		abort(message, fmt.Sprintf("expected pointers to point to the same value, got %v and %v", *a, *b))
 	}
 }
 
 func PointsToNotSame[T comparable](a, b *T, message string) {
-	if a == nil || b == nil {
+	if a == nil || b == nil { // nolint:staticcheck
 		abort(message, "expected non-nil pointers, got nil")
 	}
-	if *a == *b {
+	if *a == *b { // nolint:staticcheck
 		abort(message, fmt.Sprintf("expected pointers to point to different values, got %v and %v", *a, *b))
 	}
 }
@@ -275,6 +272,6 @@ func MapEmpty[K comparable, V any](m map[K]V, message string) {
 
 func IsEmpty[T comparable](slice []T, message string) {
 	if len(slice) != 0 {
-		abort(message, fmt.Sprintf("expected slice to be empty, but it is not"))
+		abort(message, "expected slice to be empty, but it is not")
 	}
 }
