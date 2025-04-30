@@ -65,7 +65,7 @@ func TestNotNil(t *testing.T) {
 		NotNil(nilValue, "should panic")
 	})
 
-	t.Run("nil string", func(t *testing.T) {
+	t.Run("nil pointer to string", func(t *testing.T) {
 		defer func() {
 			r := recover()
 			assert.NotNil(t, r, "Expected NotNil to panic on nil value")
@@ -88,6 +88,74 @@ func TestNotNil(t *testing.T) {
 
 	t.Run("interface not nil", func(t *testing.T) {
 		NotNil("not nil", "should not panic")
+	})
+}
+
+// TestNotNilWithUnsafe specifically tests the improved NotNil function
+// that uses unsafe to detect nil pointers inside non-nil interfaces
+func TestNotNilWithUnsafe(t *testing.T) {
+	t.Parallel()
+
+	// Test with regular non-nil values (should not panic)
+	normalString := "test"
+	NotNil(normalString, "regular string should not panic")
+
+	normalInt := 42
+	NotNil(normalInt, "regular int should not panic")
+
+	// Test with pointers to non-nil values (should not panic)
+	strPtr := new(string)
+	*strPtr = "test pointer"
+	NotNil(strPtr, "pointer to string should not panic")
+
+	intPtr := new(int)
+	*intPtr = 42
+	NotNil(intPtr, "pointer to int should not panic")
+
+	// Test with nil interface (should panic)
+	t.Run("nil interface", func(t *testing.T) {
+		t.Parallel()
+		assert.Panics(t, func() {
+			var nilInterface any
+			NotNil(nilInterface, "should panic with nil interface")
+		})
+	})
+
+	// Test with nil pointer to string (should panic)
+	t.Run("nil string pointer", func(t *testing.T) {
+		t.Parallel()
+		assert.Panics(t, func() {
+			var nilStrPtr *string
+			NotNil(nilStrPtr, "should panic with nil string pointer")
+		})
+	})
+
+	// Test with nil pointer to int (should panic)
+	t.Run("nil int pointer", func(t *testing.T) {
+		t.Parallel()
+		assert.Panics(t, func() {
+			var nilIntPtr *int
+			NotNil(nilIntPtr, "should panic with nil int pointer")
+		})
+	})
+
+	// Test with nil error interface (should panic)
+	t.Run("nil error interface", func(t *testing.T) {
+		t.Parallel()
+		assert.Panics(t, func() {
+			var nilErr error
+			NotNil(nilErr, "should panic with nil error")
+		})
+	})
+
+	// Test with typed nil (should panic)
+	t.Run("typed nil", func(t *testing.T) {
+		t.Parallel()
+		type customStruct struct{}
+		assert.Panics(t, func() {
+			var nilCustomPtr *customStruct
+			NotNil(nilCustomPtr, "should panic with typed nil")
+		})
 	})
 }
 

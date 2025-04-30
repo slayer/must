@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"slices"
+	"unsafe"
 )
 
 // OnFailure is a function type that defines the signature for functions to be called on assertion failures.
@@ -29,11 +30,29 @@ func abort(message string, details string) {
 }
 
 // NotNil checks if the given value is nil and panics if it is.
-// it validates if interface of the value is not nil and validates if the value is not nil.
-// It is used to ensure that a value is not nil before proceeding with further operations.
+// It validates if the interface of the value is not nil and if the underlying value is not nil.
+// This handles cases like nil pointers where the interface is not nil but the underlying value is.
+// Uses unsafe to check the internal representation of the interface without reflection.
 func NotNil(value any, message string) {
+	// First, check if the interface itself is nil
 	if value == nil {
 		abort(message, "expected a non-nil value, got nil")
+	}
+
+	// Check if the data pointer inside the interface is nil (e.g., *string(nil))
+	// In Go, an interface value is represented by a header with two words:
+	// a pointer to type information and a pointer to the actual data
+	type eface struct {
+		_type unsafe.Pointer
+		data  unsafe.Pointer
+	}
+
+	// Convert the interface to our internal representation to check the data pointer
+	valuePtr := (*eface)(unsafe.Pointer(&value))
+
+	// If the data pointer is nil, it means the interface contains a nil pointer value
+	if valuePtr.data == nil && valuePtr._type != nil {
+		abort(message, fmt.Sprintf("expected a non-nil value, got nil pointer of type %T", value))
 	}
 }
 
@@ -51,19 +70,19 @@ func Error(err error, message string) {
 	}
 }
 
-// Equal checks if the given value is equal to the expected value and panics if it is not.
-// It is used to ensure that two values are equal before proceeding with further operations.
-func Equal[T comparable](expected, value T, message string) {
-	if expected != value {
-		abort(message, fmt.Sprintf("expected %v to be equal to %v", expected, value))
-	}
-}
-
 // NotEqual checks if the given value is not equal to the expected value and panics if it is.
 // It is used to ensure that two values are not equal before proceeding with further operations.
 func NotEqual[T comparable](expected, value T, message string) {
 	if expected == value {
 		abort(message, fmt.Sprintf("expected %v to not be equal to %v", expected, value))
+	}
+}
+
+// Equal checks if the given value is equal to the expected value and panics if it is not.
+// It is used to ensure that two values are equal before proceeding with further operations.
+func Equal[T comparable](expected, value T, message string) {
+	if expected != value {
+		abort(message, fmt.Sprintf("expected %v to be equal to %v", expected, value))
 	}
 }
 
