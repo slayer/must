@@ -4,19 +4,26 @@ import (
 	"fmt"
 	"os"
 	"slices"
+	"sync"
 	"unsafe"
 )
 
 // OnFailure is a function type that defines the signature for functions to be called on assertion failures.
 type OnFailure func(message string, details string)
 
-var failureHandlers []OnFailure = []OnFailure{}
+var (
+	failureHandlers      []OnFailure = []OnFailure{}
+	failureHandlersMutex sync.Mutex
+)
 
 // RegisterFailureHandler registers a function to be called when an assertion fails.
 // This allows for custom handling of assertion failures, such as logging or sending errors to a monitoring service.
 // After calling all registered functions, the program will panic with the failure message.
 // The function will be called with the failure message and any additional details.
 func RegisterFailureHandler(f OnFailure) {
+	failureHandlersMutex.Lock()
+	defer failureHandlersMutex.Unlock()
+
 	failureHandlers = append(failureHandlers, f)
 }
 
