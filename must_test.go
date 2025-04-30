@@ -11,7 +11,6 @@ import (
 
 // TestRegisterFailureHandler tests the RegisterFailureHandler function
 func TestRegisterFailureHandler(t *testing.T) {
-	t.Parallel()
 
 	// Save the original failure handlers and restore them after the test
 	originalHandlers := failureHandlers
@@ -47,7 +46,6 @@ func TestRegisterFailureHandler(t *testing.T) {
 
 // TestNotNil tests the NotNil function
 func TestNotNil(t *testing.T) {
-	t.Parallel()
 
 	// Test success case - should not panic
 	NotNil("not nil", "should not panic")
@@ -94,7 +92,6 @@ func TestNotNil(t *testing.T) {
 // TestNotNilWithUnsafe specifically tests the improved NotNil function
 // that uses unsafe to detect nil pointers inside non-nil interfaces
 func TestNotNilWithUnsafe(t *testing.T) {
-	t.Parallel()
 
 	// Test with regular non-nil values (should not panic)
 	normalString := "test"
@@ -114,7 +111,6 @@ func TestNotNilWithUnsafe(t *testing.T) {
 
 	// Test with nil interface (should panic)
 	t.Run("nil interface", func(t *testing.T) {
-		t.Parallel()
 		assert.Panics(t, func() {
 			var nilInterface any
 			NotNil(nilInterface, "should panic with nil interface")
@@ -123,7 +119,6 @@ func TestNotNilWithUnsafe(t *testing.T) {
 
 	// Test with nil pointer to string (should panic)
 	t.Run("nil string pointer", func(t *testing.T) {
-		t.Parallel()
 		assert.Panics(t, func() {
 			var nilStrPtr *string
 			NotNil(nilStrPtr, "should panic with nil string pointer")
@@ -132,7 +127,6 @@ func TestNotNilWithUnsafe(t *testing.T) {
 
 	// Test with nil pointer to int (should panic)
 	t.Run("nil int pointer", func(t *testing.T) {
-		t.Parallel()
 		assert.Panics(t, func() {
 			var nilIntPtr *int
 			NotNil(nilIntPtr, "should panic with nil int pointer")
@@ -141,7 +135,6 @@ func TestNotNilWithUnsafe(t *testing.T) {
 
 	// Test with nil error interface (should panic)
 	t.Run("nil error interface", func(t *testing.T) {
-		t.Parallel()
 		assert.Panics(t, func() {
 			var nilErr error
 			NotNil(nilErr, "should panic with nil error")
@@ -150,7 +143,6 @@ func TestNotNilWithUnsafe(t *testing.T) {
 
 	// Test with typed nil (should panic)
 	t.Run("typed nil", func(t *testing.T) {
-		t.Parallel()
 		type customStruct struct{}
 		assert.Panics(t, func() {
 			var nilCustomPtr *customStruct
@@ -161,7 +153,6 @@ func TestNotNilWithUnsafe(t *testing.T) {
 
 // TestNoError tests the NoError function
 func TestNoError(t *testing.T) {
-	t.Parallel()
 
 	// Test success case - should not panic
 	NoError(nil, "should not panic")
@@ -180,7 +171,6 @@ func TestNoError(t *testing.T) {
 
 // TestError tests the Error function
 func TestError(t *testing.T) {
-	t.Parallel()
 
 	// Test success case - should not panic
 	err := errors.New("test error")
@@ -199,7 +189,6 @@ func TestError(t *testing.T) {
 
 // TestEqualNotEqual tests the Equal and NotEqual functions
 func TestEqualNotEqual(t *testing.T) {
-	t.Parallel()
 
 	// Test Equal success case - should not panic
 	Equal(42, 42, "should not panic")
@@ -232,7 +221,6 @@ func TestEqualNotEqual(t *testing.T) {
 
 // TestBooleanAssertions tests the True and False functions
 func TestBooleanAssertions(t *testing.T) {
-	t.Parallel()
 
 	// Test True success case - should not panic
 	True(true, "should not panic")
@@ -263,11 +251,9 @@ func TestBooleanAssertions(t *testing.T) {
 
 // TestNumericAssertions tests the numeric comparison functions
 func TestNumericAssertions(t *testing.T) {
-	t.Parallel()
 
 	// Test NotZero success and failure cases
 	t.Run("NotZero", func(t *testing.T) {
-		t.Parallel()
 
 		// Success case
 		NotZero(42, "should not panic")
@@ -285,7 +271,6 @@ func TestNumericAssertions(t *testing.T) {
 
 	// Test GreaterThan success and failure cases
 	t.Run("GreaterThan", func(t *testing.T) {
-		t.Parallel()
 
 		// Success case
 		GreaterThan(42, 41, "should not panic")
@@ -312,7 +297,6 @@ func TestNumericAssertions(t *testing.T) {
 
 	// Test LessThan success and failure cases
 	t.Run("LessThan", func(t *testing.T) {
-		t.Parallel()
 
 		// Success case
 		LessThan(41, 42, "should not panic")
@@ -339,7 +323,6 @@ func TestNumericAssertions(t *testing.T) {
 
 	// Test GreaterThanOrEqual success and failure cases
 	t.Run("GreaterThanOrEqual", func(t *testing.T) {
-		t.Parallel()
 
 		// Success cases
 		GreaterThanOrEqual(42, 42, "should not panic")
@@ -358,7 +341,6 @@ func TestNumericAssertions(t *testing.T) {
 
 	// Test LessThanOrEqual success and failure cases
 	t.Run("LessThanOrEqual", func(t *testing.T) {
-		t.Parallel()
 
 		// Success cases
 		LessThanOrEqual(42, 42, "should not panic")
@@ -378,11 +360,9 @@ func TestNumericAssertions(t *testing.T) {
 
 // TestEmptyAssertions tests the Empty and NotEmpty functions
 func TestEmptyAssertions(t *testing.T) {
-	t.Parallel()
 
 	// Test NotEmpty success and failure cases for different types
 	t.Run("NotEmpty", func(t *testing.T) {
-		t.Parallel()
 
 		// Success cases
 		NotEmpty(map[any]any{"key": "value"}, "should not panic")
@@ -429,7 +409,6 @@ func TestEmptyAssertions(t *testing.T) {
 
 	// Test Empty success and failure cases for different types
 	t.Run("Empty", func(t *testing.T) {
-		t.Parallel()
 
 		// Success cases
 		Empty(map[any]any{}, "should not panic")
@@ -477,11 +456,9 @@ func TestEmptyAssertions(t *testing.T) {
 
 // TestContainsAssertions tests the Contains and NotContains functions
 func TestContainsAssertions(t *testing.T) {
-	t.Parallel()
 
 	// Test Contains success and failure cases
 	t.Run("Contains", func(t *testing.T) {
-		t.Parallel()
 
 		// Success case
 		Contains([]string{"foo", "bar", "baz"}, "bar", "should not panic")
@@ -499,7 +476,6 @@ func TestContainsAssertions(t *testing.T) {
 
 	// Test NotContains success and failure cases
 	t.Run("NotContains", func(t *testing.T) {
-		t.Parallel()
 
 		// Success case
 		NotContains([]string{"foo", "bar", "baz"}, "qux", "should not panic")
@@ -518,11 +494,9 @@ func TestContainsAssertions(t *testing.T) {
 
 // TestNilAssertions tests the IsNil and IsNotNil functions
 func TestNilAssertions(t *testing.T) {
-	t.Parallel()
 
 	// Test IsNil success and failure cases
 	t.Run("IsNil", func(t *testing.T) {
-		t.Parallel()
 
 		// Success case
 		var nilValue any
@@ -541,7 +515,6 @@ func TestNilAssertions(t *testing.T) {
 
 	// Test IsNotNil success and failure cases
 	t.Run("IsNotNil", func(t *testing.T) {
-		t.Parallel()
 
 		// Success case
 		IsNotNil("not nil", "should not panic")
@@ -561,7 +534,6 @@ func TestNilAssertions(t *testing.T) {
 
 // TestFileAssertions tests the FileExists and DirExists functions
 func TestFileAssertions(t *testing.T) {
-	// Don't use t.Parallel() since we're dealing with file system operations
 
 	// Create a temporary file and directory for testing
 	tempFile, err := os.CreateTemp("", "must-test-file-*.txt")
@@ -594,7 +566,6 @@ func TestFileAssertions(t *testing.T) {
 
 	// Test FileExists success and failure cases
 	t.Run("FileExists", func(t *testing.T) {
-		// Don't use t.Parallel() here as it references shared resources
 
 		// Success case
 		FileExists(tempFilePath, "should not panic")
@@ -612,7 +583,6 @@ func TestFileAssertions(t *testing.T) {
 
 	// Test DirExists success and failure cases
 	t.Run("DirExists", func(t *testing.T) {
-		// Don't use t.Parallel() here as it references shared resources
 
 		// Success case
 		DirExists(tempDir, "should not panic")
@@ -640,11 +610,9 @@ func TestFileAssertions(t *testing.T) {
 
 // TestTypeAssertions tests the TypeOf and TypeOfNot functions
 func TestTypeAssertions(t *testing.T) {
-	t.Parallel()
 
 	// Test TypeOf success and failure cases
 	t.Run("TypeOf", func(t *testing.T) {
-		t.Parallel()
 
 		// Success case
 		TypeOf[string]("string value", "should not panic")
@@ -662,7 +630,6 @@ func TestTypeAssertions(t *testing.T) {
 
 	// Test TypeOfNot success and failure cases
 	t.Run("TypeOfNot", func(t *testing.T) {
-		t.Parallel()
 
 		// Success case
 		TypeOfNot[int]("string value", "should not panic")
@@ -681,11 +648,9 @@ func TestTypeAssertions(t *testing.T) {
 
 // TestPointerAssertions tests the PointsToSame and PointsToNotSame functions
 func TestPointerAssertions(t *testing.T) {
-	t.Parallel()
 
 	// Test PointsToSame success and failure cases
 	t.Run("PointsToSame", func(t *testing.T) {
-		t.Parallel()
 
 		// Success case - pointers to same value
 		value1 := "same value"
@@ -718,7 +683,6 @@ func TestPointerAssertions(t *testing.T) {
 
 	// Test PointsToNotSame success and failure cases
 	t.Run("PointsToNotSame", func(t *testing.T) {
-		t.Parallel()
 
 		// Success case - pointers to different values
 		value1 := "value1"
@@ -754,11 +718,9 @@ func TestPointerAssertions(t *testing.T) {
 
 // TestSliceAssertions tests the SliceHas and SliceNotHas functions
 func TestSliceAssertions(t *testing.T) {
-	t.Parallel()
 
 	// Test SliceHas success and failure cases
 	t.Run("SliceHas", func(t *testing.T) {
-		t.Parallel()
 
 		// Success case
 		SliceHas([]string{"foo", "bar", "baz"}, "bar", "should not panic")
@@ -776,7 +738,6 @@ func TestSliceAssertions(t *testing.T) {
 
 	// Test SliceNotHas success and failure cases
 	t.Run("SliceNotHas", func(t *testing.T) {
-		t.Parallel()
 
 		// Success case
 		SliceNotHas([]string{"foo", "bar", "baz"}, "qux", "should not panic")
@@ -795,11 +756,9 @@ func TestSliceAssertions(t *testing.T) {
 
 // TestMapAssertions tests the map-related assertion functions
 func TestMapAssertions(t *testing.T) {
-	t.Parallel()
 
 	// Test MapHas success and failure cases
 	t.Run("MapHas", func(t *testing.T) {
-		t.Parallel()
 
 		// Success case
 		testMap := map[string]int{"foo": 1, "bar": 2, "baz": 3}
@@ -818,7 +777,6 @@ func TestMapAssertions(t *testing.T) {
 
 	// Test MapNotHas success and failure cases
 	t.Run("MapNotHas", func(t *testing.T) {
-		t.Parallel()
 
 		// Success case
 		testMap := map[string]int{"foo": 1, "bar": 2, "baz": 3}
@@ -837,7 +795,6 @@ func TestMapAssertions(t *testing.T) {
 
 	// Test MapEmpty and MapNotEmpty success and failure cases
 	t.Run("MapEmpty", func(t *testing.T) {
-		t.Parallel()
 
 		// Success case
 		MapEmpty(map[string]int{}, "should not panic")
@@ -854,7 +811,6 @@ func TestMapAssertions(t *testing.T) {
 	})
 
 	t.Run("MapNotEmpty", func(t *testing.T) {
-		t.Parallel()
 
 		// Success case
 		MapNotEmpty(map[string]int{"foo": 1}, "should not panic")
@@ -873,7 +829,6 @@ func TestMapAssertions(t *testing.T) {
 
 // TestIsEmpty tests the IsEmpty function
 func TestIsEmpty(t *testing.T) {
-	t.Parallel()
 
 	// Success case
 	IsEmpty([]int{}, "should not panic")
