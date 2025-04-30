@@ -48,7 +48,7 @@ func NotNil(value any, message string) {
 	}
 
 	// Convert the interface to our internal representation to check the data pointer
-	valuePtr := (*eface)(unsafe.Pointer(&value))
+	valuePtr := (*eface)(unsafe.Pointer(&value)) // #nosec G103
 
 	// If the data pointer is nil, it means the interface contains a nil pointer value
 	if valuePtr.data == nil && valuePtr._type != nil {
